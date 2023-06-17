@@ -1,0 +1,105 @@
+<body>
+
+    <head>
+        <title>视频换脸</title>
+    </head>
+    <style>
+        input[type="file"] {
+            display: none;
+        }
+
+        .upload-btn {
+            display: inline-block;
+            background-color: #3498db;
+            color: #fff;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .swap-face-btn {
+            display: inline-block;
+            background-color: #3498db;
+            color: #fff;
+            padding: 20px 30px;
+            font-size: 28px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .center {
+            margin: 0 auto;
+            /* height: 60%; */
+            width: 60%;
+            display: block;
+        }
+    </style>
+
+    <center>
+        <h1>视频换脸</h1>
+    </center>
+    <script>
+        // js访问url中的query param查询参数 http://172.16.14.2:8000/static/home.html?img_url=/static/user_upload/init_girl.jpg&video_url=/static/user_upload/init_ww.mp4
+        const url_query_params = new URLSearchParams(window.location.search);  // 获取url中问号? 之后的整个查询参数
+        const img_url_param = url_query_params.get('img_url');
+        const video_url_param = url_query_params.get('video_url');
+
+        // html 使用js变量
+        document.write(`<form action="/upload_img?img_url=${img_url_param}&video_url=${video_url_param}" enctype="multipart/form-data" method="post">`);
+    </script>
+    <label for="img-upload" class="upload-btn">换一张正脸照片...</label>
+    <span class="img-name"></span>
+    <input name="img" type="file" accept="image/*" id="img-upload">
+    <button type="submit" class="upload-btn">上传图片</button>
+    </form><br>
+    <script>
+        // html 使用js变量
+        document.write(`<img src="${img_url_param}"  class="center"></img>`)
+    </script>
+
+    <script>
+        // html 使用js变量
+        document.write(`<form action="/upload_video?img_url=${img_url_param}&video_url=${video_url_param}" enctype="multipart/form-data" method="post"> `);
+    </script>
+    <label for="video-upload" class="upload-btn">换一个视频...</label>
+
+    <span class="video-name"></span>
+
+    <input name="video" type="file" accept="video/*" id="video-upload">
+    <button type="submit" class="upload-btn">上传视频</button>
+    </form>
+
+    <script>
+        // html 使用js变量
+        document.write(`<video src ="${video_url_param}" autoplay controls = "controls"  class= "center"></video>`)
+    </script>
+
+    <br><button type="submit" class="swap-face-btn">开始换脸</button><br><br><br>
+
+
+    <script>
+        const imgUpload = document.getElementById("img-upload");
+        const imgName = document.querySelector(".img-name");
+
+        imgUpload.addEventListener("change", (e) => {
+            imgName.textContent = e.target.files[0].name;
+        });
+
+        // Display selected file name in the form
+        const videoUpload = document.getElementById("video-upload");
+        const vedioName = document.querySelector(".video-name");
+
+        videoUpload.addEventListener("change", (e) => {
+            vedioName.textContent = e.target.files[0].name;
+        });
+
+
+
+
+
+    </script>
+</body>
