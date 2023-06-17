@@ -1,1 +1,4 @@
-# video_swapface
+```bash
+$ pip install fastapi uvicorn
+
+```
