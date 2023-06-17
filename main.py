@@ -1,6 +1,9 @@
 import os
 import time
 import uvicorn
+import subprocess
+import uuid
+
 
 from fastapi import FastAPI, File, UploadFile, status
 from fastapi.responses import HTMLResponse, RedirectResponse
@@ -10,8 +13,8 @@ app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 USER_UPLOAD_DIR = "static/user_upload"
-INIT_IMG=f"{USER_UPLOAD_DIR}/init_girl.jpg"
-INIT_VIDEO=f"{USER_UPLOAD_DIR}/init_ww.mp4"
+INIT_IMG = f"{USER_UPLOAD_DIR}/init_girl.jpg"
+INIT_VIDEO = f"{USER_UPLOAD_DIR}/init_ww.mp4"
 
 
 @app.get("/")
@@ -21,10 +24,10 @@ async def home() -> RedirectResponse:
 
 
 @app.post("/upload_img/")
-async def create_upload_files(img: UploadFile, img_url:str, video_url:str):
-    print(img_url, "**"*20, video_url)
+async def create_upload_files(img: UploadFile, img_url: str, video_url: str):
     start = time.time()
-    new_file_path = f"{USER_UPLOAD_DIR}/{img.filename}"
+    _, file_ext = os.path.split(img.filename)   # 获取上传文件的扩展名 .jpg
+    new_file_path = f"{USER_UPLOAD_DIR}/{uuid.uuid1()}{file_ext}"  # 使用uuid作为文件名，避免冲突
     try:
         content = await img.read()
         with open(new_file_path, "wb") as f:
@@ -33,14 +36,15 @@ async def create_upload_files(img: UploadFile, img_url:str, video_url:str):
     except Exception as e:
         msg = {"❌": str(e), '耗时(秒)': time.time() - start, '文件': new_file_path}
     redirect_url = f"/static/home.html?img_url=/{new_file_path}&video_url={video_url}"
-    print(redirect_url)
+    print(msg, "**"*20, "\n", redirect_url)
     return RedirectResponse(url=redirect_url, status_code=status.HTTP_303_SEE_OTHER)
 
 
 @app.post("/upload_video/")
-async def create_upload_files(video: UploadFile, img_url:str, video_url:str) -> RedirectResponse:
+async def create_upload_files(video: UploadFile, img_url: str, video_url: str) -> RedirectResponse:
     start = time.time()
-    new_file_path = f"{USER_UPLOAD_DIR}/{video.filename}"
+    _, file_ext = os.path.split(video.filename)   # 获取上传文件的扩展名 .jpg
+    new_file_path = f"{USER_UPLOAD_DIR}/{uuid.uuid1()}{file_ext}" # 使用uuid作为文件名，避免冲突
     try:
         content = await video.read()
         with open(new_file_path, "wb") as f:
@@ -49,13 +53,14 @@ async def create_upload_files(video: UploadFile, img_url:str, video_url:str) -> 
     except Exception as e:
         msg = {"❌": str(e), '耗时(秒)': time.time() - start, '文件': new_file_path}
     redirect_url = f"/static/home.html?img_url={img_url}&video_url=/{new_file_path}"
-    print(redirect_url)
+    print(msg, "**"*20, "\n", redirect_url)
     return RedirectResponse(url=redirect_url, status_code=status.HTTP_303_SEE_OTHER)
 
 
-
+@app.get("/swapface/")
+async def video_swapface() -> RedirectResponse:
+    return RedirectResponse(url=redirect_url)
 
 
 if __name__ == '__main__':
-    # uvicorn.run(app=app,host="127.0.0.1", port=8000, reload=True)
-    uvicorn.run(app="test:app", host="172.16.14.2", port=8000, reload=True)
+    uvicorn.run(app="main:app", host="172.16.14.2", port=8000, reload=True)
