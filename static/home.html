@@ -42,11 +42,15 @@
     <center>
         <h1>视频换脸</h1>
     </center>
+
+    <!-- 选择图片文件并上传 -->
     <script>
         // js访问url中的query param查询参数 http://172.16.14.2:8000/static/home.html?img_url=/static/user_upload/init_girl.jpg&video_url=/static/user_upload/init_ww.mp4
         const url_query_params = new URLSearchParams(window.location.search);  // 获取url中问号? 之后的整个查询参数
         const img_url_param = url_query_params.get('img_url');
         const video_url_param = url_query_params.get('video_url');
+        const face_swaped_video_url_param = url_query_params.get('face_swaped_video');
+
 
         // html 使用js变量
         document.write(`<form action="/upload_img?img_url=${img_url_param}&video_url=${video_url_param}" enctype="multipart/form-data" method="post">`);
@@ -61,6 +65,7 @@
         document.write(`<img src="${img_url_param}"  class="center"></img>`)
     </script>
 
+    <!-- 选择视频文件并上传 -->
     <script>
         // html 使用js变量
         document.write(`<form action="/upload_video?img_url=${img_url_param}&video_url=${video_url_param}" enctype="multipart/form-data" method="post"> `);
@@ -75,12 +80,22 @@
 
     <script>
         // html 使用js变量
-        document.write(`<video src ="${video_url_param}" autoplay controls = "controls"  class= "center"></video>`)
+        document.write(`<video src ="${video_url_param}" autoplay  controls = "controls"  class= "center"></video><br><br>`)
+        document.write(`<a href="/swapface?img_url=${img_url_param}&video_url=${video_url_param}"`);
+    </script>
+    <center><button  class="swap-face-btn">开始换脸</button></center> </a>
+
+    <br><br><br>
+
+
+    <!-- 显示换脸后的视频 -->
+    <script>
+        if (face_swaped_video_url_param.length > 0) {   // 如果换脸后的视频不为空，就显示视频
+            document.write(`<video src ="${face_swaped_video_url_param}"  controls = "controls"  class= "center"></video>`) // html 使用js变量
+        } 
     </script>
 
-    <br><button type="submit" class="swap-face-btn">开始换脸</button><br><br><br>
-
-
+    <!-- 显示选中文件的名称 -->
     <script>
         const imgUpload = document.getElementById("img-upload");
         const imgName = document.querySelector(".img-name");
@@ -96,10 +111,5 @@
         videoUpload.addEventListener("change", (e) => {
             vedioName.textContent = e.target.files[0].name;
         });
-
-
-
-
-
     </script>
 </body>

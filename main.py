@@ -15,6 +15,7 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 USER_UPLOAD_DIR = "static/user_upload"
 INIT_IMG = f"{USER_UPLOAD_DIR}/init_girl.jpg"
 INIT_VIDEO = f"{USER_UPLOAD_DIR}/init_ww.mp4"
+INIT_FACE_SWAPED_VIDEO=f"{USER_UPLOAD_DIR}/init_face_swaped.mov"
 
 
 @app.get("/")
@@ -58,7 +59,10 @@ async def create_upload_files(video: UploadFile, img_url: str, video_url: str) -
 
 
 @app.get("/swapface/")
-async def video_swapface() -> RedirectResponse:
+async def video_swapface(img_url: str, video_url: str) -> RedirectResponse:
+    redirect_url = f"/static/home.html?img_url={img_url}&video_url={video_url}&face_swaped_video=/{INIT_FACE_SWAPED_VIDEO}"
+    print( "**"*20, "\n", redirect_url)
+
     return RedirectResponse(url=redirect_url)
 
 
