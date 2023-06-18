@@ -4,7 +4,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
     <title>视频换脸</title>
-
+ 
     <style>
         input[type="file"] {
             display: none;
@@ -84,7 +84,7 @@
 
     <script>
         // html 使用js变量
-        document.write(`<video src ="${video_url_param}"   controls = "controls"  class= "center"></video><br><br>`)
+        document.write(`<video src ="${video_url_param}" autoplay  controls = "controls"  class= "center"></video><br><br>`)
         document.write(`<a href="/swapface?img_url=${img_url_param}&video_url=${video_url_param}"`);
     </script>
     <center><button class="swap-face-btn">开始换脸</button></center> </a>
@@ -96,6 +96,7 @@
     <script>
         if (face_swaped_video_url_param.length > 0) {   // 如果换脸后的视频不为空，就显示视频
             document.write(`<video src ="${face_swaped_video_url_param}" autoplay controls = "controls"  class= "center"></video>`) // html 使用js变量
+            document.write(`<br><br><a  href="${face_swaped_video_url_param}" class= "center" download >点击下载换脸后的视频</a><br><br><br>`) // html 使用js变量
         } 
     </script>
 

@@ -75,6 +75,7 @@ async def video_swapface(img_url: str, video_url: str) -> RedirectResponse:
     output_video_file = f"{USER_UPLOAD_DIR}/{uid}_output{video_ext}"
     os.system(f"cp {USER_UPLOAD_DIR}/{video_file_basename} {tmp_video_file}")
 
+    #换脸
     roop_run_command = f"python ../roop/run.py -f .{img_url} -t ./{tmp_video_file} -o ./{output_video_file} --gpu-vendor nvidia --gpu-threads 2"
     subprocess.call(roop_run_command.split(" "))
     print("**"*20, "\n", roop_run_command)
@@ -100,7 +101,11 @@ def mp4_faststart(mp4_file:str) -> str:
     f, e = os.path.splitext(mp4_file) # /static/user_upload/init_girl.mp4 分成2部分 /static/user_upload/init_girl  .mp4
     fast_mp4_file = f"{f}_fast{e}"
 
-    faststart_command = f"ffmpeg -i {mp4_file} -movflags faststart -acodec copy -vcodec copy {fast_mp4_file}"
+
+
+
+    # faststart_command = f"ffmpeg -i {mp4_file} -movflags faststart -acodec copy -vcodec copy {fast_mp4_file}"
+    faststart_command = f"ffmpeg -i {mp4_file} -c copy -f mp4 -movflags faststart {fast_mp4_file}"
     subprocess.run(faststart_command, shell=True) # 如果不加 shell=True， 会报错：No such file or directory
 
     print("\n\n", fast_mp4_file, "\n\n")
