@@ -9,11 +9,12 @@ pip install python-multipart
 uvicorn main:app  --reload
 ```
 
-# uvicorn后台运行，需要依靠uvicorn
-```bash
-pip install gunicorn
+# uvicorn后台运行 nohup
+nohup是一种Unix命令，用于在后台运行进程，并将其输出重定向到指定的文件中，从而使进程在用户退出终端后仍能继续运行。
+当我们使用nohup命令来运行uvicorn时，我们可以将uvicorn进程转换为守护进程并将输出写入到指定的文件中。
 
-gunicorn main:app --workers 2 --worker-class uvicorn.workers.UvicornWorker -t 300 --graceful-timeout 300 --bind 0.0.0.0:8000 &
+```bash
+nohup uvicorn myapp:app --host 0.0.0.0 --port 8000 > uvicorn.log 2>&1 &
 ```
 
 
