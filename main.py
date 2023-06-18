@@ -68,11 +68,11 @@ async def create_upload_files(video: UploadFile, img_url: str, video_url: str) -
 @app.get("/swapface/")
 async def video_swapface(img_url: str, video_url: str) -> RedirectResponse:
     # roop 在执行换脸过程中会生成一个和视频同名的目录，避免有2个用户同时使用同一个视频进行换脸。 调用系统命令cp，拷贝多一份用uuid命名的视频文件，避免冲突
-    # /static/user_upload/init_girl.mp4  中的 init_girl.mp4
-    video_file_basename = os.path.basename(video_url)
+    video_file_basename = os.path.basename(video_url)     # /static/user_upload/init_girl.mp4  中的 init_girl.mp4
     _, video_ext = os.path.splitext(video_url)   # 获取上传文件的扩展名，例如  .mp4
-    tmp_video_file = f"{USER_UPLOAD_DIR}/{uuid.uuid1()}_tmp{video_ext}"
-    output_video_file = f"{USER_UPLOAD_DIR}/{uuid.uuid1()}_output{video_ext}"
+    uid = uuid.uuid1()
+    tmp_video_file = f"{USER_UPLOAD_DIR}/{uid}_tmp{video_ext}"
+    output_video_file = f"{USER_UPLOAD_DIR}/{uid}_output{video_ext}"
     os.system(f"cp {USER_UPLOAD_DIR}/{video_file_basename} {tmp_video_file}")
 
     roop_run_command = f"python ../roop/run.py -f .{img_url} -t ./{tmp_video_file} -o ./{output_video_file} --gpu-vendor nvidia --gpu-threads 2"
@@ -91,17 +91,17 @@ def mov_to_mp4(mov_file:str) -> str:
     mp4_filename = f"{os.path.splitext(mov_file)[0]}.mp4"
     ffmpeg_command = f"ffmpeg -i  ./{mov_file} -vcodec libx264  -preset fast -crf 22 -y -acodec copy ./{mp4_filename}" 
     print("##"*30,"\n", ffmpeg_command)
-    subprocess.run(ffmpeg_command.split(" "))
+    subprocess.run(ffmpeg_command, shell=True)  # 如果不加 shell=True， 会报错：No such file or directory
 
     os.remove(mov_file)  # 删除mov文件
     return mp4_filename
 
 def mp4_faststart(mp4_file:str) -> str:
-    f, e = os.path.splitext(mov_file)
+    f, e = os.path.splitext(mp4_file) # /static/user_upload/init_girl.mp4 分成2部分 /static/user_upload/init_girl  .mp4
     fast_mp4_file = f"{f}_fast{e}"
 
     faststart_command = f"ffmpeg -i {mp4_file} -movflags faststart -acodec copy -vcodec copy {fast_mp4_file}"
-    subprocess.run(faststart_command.split(" "))
+    subprocess.run(faststart_command, shell=True) # 如果不加 shell=True， 会报错：No such file or directory
 
     print("\n\n", fast_mp4_file, "\n\n")
     return fast_mp4_file
