@@ -1,8 +1,10 @@
-<body>
+<html>
 
-    <head>
-        <title>视频换脸</title>
-    </head>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+    <title>视频换脸</title>
+
     <style>
         input[type="file"] {
             display: none;
@@ -38,7 +40,9 @@
             display: block;
         }
     </style>
+</head>
 
+<body>
     <center>
         <h1>视频换脸</h1>
     </center>
@@ -83,7 +87,7 @@
         document.write(`<video src ="${video_url_param}" autoplay  controls = "controls"  class= "center"></video><br><br>`)
         document.write(`<a href="/swapface?img_url=${img_url_param}&video_url=${video_url_param}"`);
     </script>
-    <center><button  class="swap-face-btn">开始换脸</button></center> </a>
+    <center><button class="swap-face-btn">开始换脸</button></center> </a>
 
     <br><br><br>
 
@@ -113,3 +117,5 @@
         });
     </script>
 </body>
+
+</html>
