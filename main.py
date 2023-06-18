@@ -78,8 +78,13 @@ async def video_swapface(img_url: str, video_url: str) -> RedirectResponse:
     redirect_url = f"/static/home.html?img_url={img_url}&video_url={video_url}&face_swaped_video=/{output_video_file}"
     print("**"*20, "\n", redirect_url)
 
+
+
+
     return RedirectResponse(url=redirect_url)
 
 
 if __name__ == '__main__':
-    uvicorn.run(app="main:app", host="172.16.14.2", port=8000, reload=True)
+    uvicorn.run(app="main:app", host="127.0.0.1", port=8000, reload=True)
+    # uvicorn.run(app="main:app", host="172.16.14.2", port=8000, reload=True)
+
