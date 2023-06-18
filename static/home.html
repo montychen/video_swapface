@@ -84,7 +84,7 @@
 
     <script>
         // html 使用js变量
-        document.write(`<video src ="${video_url_param}" autoplay  controls = "controls"  class= "center"></video><br><br>`)
+        document.write(`<video src ="${video_url_param}"   controls = "controls"  class= "center"></video><br><br>`)
         document.write(`<a href="/swapface?img_url=${img_url_param}&video_url=${video_url_param}"`);
     </script>
     <center><button class="swap-face-btn">开始换脸</button></center> </a>
@@ -95,7 +95,7 @@
     <!-- 显示换脸后的视频 -->
     <script>
         if (face_swaped_video_url_param.length > 0) {   // 如果换脸后的视频不为空，就显示视频
-            document.write(`<video src ="${face_swaped_video_url_param}"  controls = "controls"  class= "center"></video>`) // html 使用js变量
+            document.write(`<video src ="${face_swaped_video_url_param}" autoplay controls = "controls"  class= "center"></video>`) // html 使用js变量
         } 
     </script>
 
