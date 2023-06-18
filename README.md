@@ -13,7 +13,7 @@ uvicorn main:app  --reload
 ```bash
 pip install gunicorn
 
-gunicorn main:app --workers 2 --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:8000 &
+gunicorn main:app --workers 2 --worker-class uvicorn.workers.UvicornWorker -t 300 --graceful-timeout 300 --bind 0.0.0.0:8000 &
 ```
 
-gunicorn main:app --worker-connections=1000 --workers=2  -k uvicorn.workers.UvicornWorker -b 0.0.0.0:8000
+
