@@ -1,0 +1,1 @@
+python run.py -f joy.jpg -t video.mp4 -o j1.mp4  --gpu-vendor nvidia
