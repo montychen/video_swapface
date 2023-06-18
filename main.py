@@ -9,13 +9,14 @@ from fastapi import FastAPI, File, UploadFile, status
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 
+
 app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 USER_UPLOAD_DIR = "static/user_upload"
 INIT_IMG = f"{USER_UPLOAD_DIR}/init_girl.jpg"
 INIT_VIDEO = f"{USER_UPLOAD_DIR}/init_ww.mp4"
-INIT_FACE_SWAPED_VIDEO = f"{USER_UPLOAD_DIR}/init_face_swaped.mov"
+INIT_FACE_SWAPED_VIDEO = f"{USER_UPLOAD_DIR}/init_face_swaped.mp4"
 
 
 @app.get("/")
@@ -46,13 +47,17 @@ async def create_upload_files(img: UploadFile, img_url: str, video_url: str):
 async def create_upload_files(video: UploadFile, img_url: str, video_url: str) -> RedirectResponse:
     start = time.time()
     _, file_ext = os.path.splitext(video.filename)   # 获取上传文件的扩展名 .jpg
-    # 使用uuid作为文件名，避免冲突
+    # 使用uuid重命名文件名，避免冲突
     new_file_path = f"{USER_UPLOAD_DIR}/{uuid.uuid1()}{file_ext}"
     try:
         content = await video.read()
         with open(new_file_path, "wb") as f:
             f.write(content)
         msg = {"✅": new_file_path, '耗时(秒)': time.time() - start}
+
+        if file_ext.lower() ==".mov":    # 如果是mov格式，就转成MP4格式
+            new_file_path = mov_to_mp4(new_file_path)
+
     except Exception as e:
         msg = {"❌": str(e), '耗时(秒)': time.time() - start, '文件': new_file_path}
     redirect_url = f"/static/home.html?img_url={img_url}&video_url=/{new_file_path}"
@@ -74,14 +79,32 @@ async def video_swapface(img_url: str, video_url: str) -> RedirectResponse:
     subprocess.call(roop_run_command.split(" "))
     print("**"*20, "\n", roop_run_command)
 
+    output_video_file = mp4_faststart(output_video_file)  # mp4播放的时候，秒开处理
 
     redirect_url = f"/static/home.html?img_url={img_url}&video_url={video_url}&face_swaped_video=/{output_video_file}"
     print("**"*20, "\n", redirect_url)
 
-
-
-
     return RedirectResponse(url=redirect_url)
+
+
+def mov_to_mp4(mov_file:str) -> str:
+    mp4_filename = f"{os.path.splitext(mov_file)[0]}.mp4"
+    ffmpeg_command = f"ffmpeg -i  ./{mov_file} -vcodec libx264  -preset fast -crf 22 -y -acodec copy ./{mp4_filename}" 
+    print("##"*30,"\n", ffmpeg_command)
+    subprocess.run(ffmpeg_command.split(" "))
+
+    os.remove(mov_file)  # 删除mov文件
+    return mp4_filename
+
+def mp4_faststart(mp4_file:str) -> str:
+    f, e = os.path.splitext(mov_file)
+    fast_mp4_file = f"{f}_fast{e}"
+
+    faststart_command = f"ffmpeg -i {mp4_file} -movflags faststart -acodec copy -vcodec copy {fast_mp4_file}"
+    subprocess.run(faststart_command.split(" "))
+
+    print("\n\n", fast_mp4_file, "\n\n")
+    return fast_mp4_file
 
 
 if __name__ == '__main__':
