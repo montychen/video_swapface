@@ -9,7 +9,7 @@ pip install python-multipart
 uvicorn main:app  --reload
 ```
 
-# 后台部署
+# uvicorn后台运行，需要依靠uvicorn
 ```bash
 pip install gunicorn
 
