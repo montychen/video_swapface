@@ -101,9 +101,6 @@ def mp4_faststart(mp4_file:str) -> str:
     f, e = os.path.splitext(mp4_file) # /static/user_upload/init_girl.mp4 分成2部分 /static/user_upload/init_girl  .mp4
     fast_mp4_file = f"{f}_fast{e}"
 
-
-
-
     # faststart_command = f"ffmpeg -i {mp4_file} -movflags faststart -acodec copy -vcodec copy {fast_mp4_file}"
     faststart_command = f"ffmpeg -i {mp4_file} -c copy -f mp4 -movflags faststart {fast_mp4_file}"
     subprocess.run(faststart_command, shell=True) # 如果不加 shell=True， 会报错：No such file or directory

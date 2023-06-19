@@ -1,25 +1,49 @@
 <html>
 
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <title></title>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
 
-        <style>
-            .center {
-                margin: 0 auto;
-                /* height: 60%; */
-                width: 60%;
-                display: block;
-            }
-        </style>
-    </head>
+    <style>
+        .center {
+            margin: 0 auto;
+            /* height: 60%; */
+            width: 60%;
+            display: block;
+        }
+    </style>
 
-    <body>
-        <br>
-        <a href="" class="center">换脸程序地址</a>
 
-        <video src ="http://8.134.72.16/static/user_upload/test_fast.mp4" autoplay  controls = "controls"  class= "center"></video>
+    <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
+    <script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
 
-    </body>
+</head>
 
-    </html>
+<body>
+    <br>
+    <a href="" class="center">换脸程序地址</a>
+
+    <!-- <video src ="http://8.134.72.16/static/user_upload/test_fast.mp4" autoplay  controls = "controls"  class= "center"></video> -->
+
+    <!-- <div id="player"></div>
+    <script>
+        var player = new Clappr.Player({ source: "http://8.134.72.16/static/user_upload/test_fast.mp4", parentId: "#player" });
+    </script> -->
+    <video id="player" playsinline controls data-poster="/path/to/poster.jpg">
+        <source src="http://8.134.72.16/static/user_upload/aa.mp4" type="video/mp4" />
+      
+        <!-- Captions are optional -->
+        <track kind="captions" label="English captions" src="/path/to/captions.vtt" srclang="en" default />
+      </video>
+
+<br><br><br>
+    <video id="player" playsinline controls data-poster="/path/to/poster.jpg">
+        <source src="http://8.134.72.16/static/user_upload/aa_output.mp4" type="video/mp4" />
+      
+        <!-- Captions are optional -->
+        <track kind="captions" label="English captions" src="/path/to/captions.vtt" srclang="en" default />
+      </video>
+
+</body>
+
+</html>
