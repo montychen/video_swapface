@@ -101,7 +101,7 @@
         if (face_swaped_video_url_param.length > 0) {   // 如果换脸后的视频不为空，就显示视频
             // document.write(`<video src ="${face_swaped_video_url_param}" autoplay controls = "controls"  class= "center"></video>`) // html 使用js变量
             document.write(`
-            <video id="player" playsinline controls data-poster="/path/to/poster.jpg">
+            <video id="player" playsinline controls data-poster="/path/to/poster.jpg" class= "center">
                 <source src="${face_swaped_video_url_param}" type="video/mp4" />
             
                 <!-- Captions are optional -->
