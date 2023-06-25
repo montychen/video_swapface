@@ -1,1 +1,29 @@
-python run.py -f joy.jpg -t video.mp4 -o j1.mp4  --gpu-vendor nvidia
+
+python run.py -s ../roop_require/joy.jpg -t ../roop_require/video.mp4 -o ../output/gj1_1.mp4   --keep-fps --keep-audio --execution-provider cuda --video-quality 1 --execution-threads 2
+
+
+ python ../roop/run.py -f ./static/user_upload/c586c0fa-0daf-11ee-bb3b-9a165b215586dj.jpg 
+ -t ./static/user_upload/df0302c8-0daf-11ee-bb3b-9a165b215586_tmp.mp4 
+ -o ./static/user_upload/df0305fc-0daf-11ee-bb3b-9a165b215586_output.mp4 --gpu-vendor nvidia --gpu-threads 2
+
+
+ ffmpeg -i  init_face_swaped.mov -vcodec libx264  -preset fast -crf 22 -y -acodec copy init_face_swaped.mp4
+
+
+ ffmpeg -i  b.mov -vcodec libx264  -preset fast -crf 22 -y -acodec copy b.mp4
+ ffmpeg -i input.mkv -acodec copy -vcodec copy out.mp4 
+
+
+
+
+ffmpeg -i input.mp4 -movflags faststart -acodec copy -vcodec copy output.mp4
+
+ffmpeg -i b.mp4 -movflags faststart -acodec copy -vcodec copy b_fast.mp4
+
+
+ffmpeg -i xinchen.mp4  -c copy -bsf hevc_mp4toannexb output.ts  
+
+
+
+
+ffmpeg -i output.ts -c copy -map 0 -f segment -segment_list playlist.m3u8 -segment_time 5 output%03d.ts
